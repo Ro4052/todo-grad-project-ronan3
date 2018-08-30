@@ -23,7 +23,7 @@ class App extends Component {
 
     render() {
         const displayList = this.state.todos.map(todo => 
-            <li key={todo.id}> {todo.title} </li>
+            <div key={todo.id}> {todo.title} </div>
         );
         return (
             <div className="App">
@@ -31,9 +31,9 @@ class App extends Component {
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title"> TODO List </h1>
                 </header>
-                <ul>
+                <div className="todo-list">
                     {displayList}
-                </ul>
+                </div>
             </div>
         );
     }
