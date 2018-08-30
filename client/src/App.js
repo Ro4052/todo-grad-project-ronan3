@@ -1,21 +1,42 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            todos: []
+        }
+        this.getTodoList();
+    }
+
+    getTodoList() {
+        axios.get('/api/todo')
+            .then(res => {
+                this.setState({
+                    todos: res.data
+                });
+            });
+    }
+
+    render() {
+        const displayList = this.state.todos.map(todo => 
+            <li key={todo.id}> {todo.title} </li>
+        );
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <h1 className="App-title"> TODO List </h1>
+                </header>
+                <ul>
+                    {displayList}
+                </ul>
+            </div>
+        );
+    }
 }
 
 export default App;
