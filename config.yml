@@ -1,0 +1,11 @@
+machine:
+  node:
+    version: 8.11.4
+general:
+  artifacts:
+    - "build_artifacts"
+deployment:
+  prod:
+    branch: master
+    heroku:
+      appname: todo-grad-project-ronan3
