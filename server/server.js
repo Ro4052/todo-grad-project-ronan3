@@ -21,10 +21,7 @@ module.exports = function(port, dirPath, middleware, callback) {
         latestId++;
         todos.push(todo);
         res.status(201);
-        res.json({
-            newId: todo.id,
-            todos: todos
-        });
+        res.send(todo.id);
     });
 
     // Update
