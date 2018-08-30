@@ -1,16 +1,25 @@
 {
   "name": "todo-grad-project-ronan3",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "React conversion of todo app",
+  "main": "server.js",
   "dependencies": {
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-scripts": "1.1.5"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "underscore": "^1.9.1"
   },
+  "devDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ro4052/todo-grad-project-ronan3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ro4052/todo-grad-project-ronan3/issues"
+  },
+  "homepage": "https://github.com/Ro4052/todo-grad-project-ronan3#readme"
 }
