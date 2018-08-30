@@ -18,22 +18,19 @@ jobs:
 
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-  deployment:
-    staging:
-      branch: master
-      heroku:
-        appname: todo-grad-project-ronan3
+      - run: npm install
+  
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/repo
+    environment:
+      HEROKU_APP: 'todo-grad-project-ronan3'
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git master
 
 
