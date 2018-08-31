@@ -14,10 +14,10 @@ class App extends Component {
         this.state = {
             todos: [],
             filter: 'all',
-            newTitle: ''
+            createTitle: ''
         }
         this.updateFilter = this.updateFilter.bind(this);
-        this.updateNewTitle = this.updateNewTitle.bind(this);
+        this.updateCreateTitle = this.updateCreateTitle.bind(this);
         this.createTodo = this.createTodo.bind(this);
         this.updateTodo = this.updateTodo.bind(this);
         this.deleteTodo = this.deleteTodo.bind(this);
@@ -40,20 +40,20 @@ class App extends Component {
         });
     }
 
-    updateNewTitle(event) {
+    updateCreateTitle(event) {
         this.setState({
-            newTitle: event.target.value
+            createTitle: event.target.value
         });
     }
 
     createTodo(event) {
         event.preventDefault();
-        if (!this.state.newTitle) {
+        if (!this.state.createTitle) {
             return;
         }
 
         const todo = {
-            title: this.state.newTitle,
+            title: this.state.createTitle,
             isComplete: false
         }
         axios.post('/api/todo', {
@@ -66,7 +66,7 @@ class App extends Component {
                     todo.id = res.data;
                     todos.push(todo);
                     this.setState({
-                        newTitle: '',
+                        createTitle: '',
                         todos: todos
                     });
                 }
@@ -136,8 +136,8 @@ class App extends Component {
                     <form>
                         <Input
                             action={ <Button content='Create' onClick={this.createTodo} /> }
-                            value={this.state.newTitle}
-                            onChange={this.updateNewTitle}
+                            value={this.state.createTitle}
+                            onChange={this.updateCreateTitle}
                             placeholder='Create a new todo...'
                         />
                     </form>
