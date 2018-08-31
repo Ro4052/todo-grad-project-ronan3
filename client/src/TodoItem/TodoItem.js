@@ -11,6 +11,8 @@ class TodoItem extends Component {
             newTitle: this.props.todo.title
         }
         document.addEventListener('click', this.pageClick.bind(this), true);
+        document.addEventListener('keydown', this.detectEscape.bind(this), true);
+        this.closeInput = this.closeInput.bind(this);
         this.changeTitleInput = this.changeTitleInput.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.updateTitle = this.updateTitle.bind(this);
@@ -20,8 +22,21 @@ class TodoItem extends Component {
 
     pageClick(event) {
         if (event.target.id !== `title${this.props.todo.id}`) {
-            this.changeTitleInput(false);
+            this.closeInput();
         }
+    }
+
+    detectEscape(event) {
+        if (event.keyCode === 27) {
+            this.closeInput();
+        }
+    }
+
+    closeInput() {
+        this.changeTitleInput(false);
+        this.setState({
+            newTitle: this.props.todo.title
+        });
     }
     
     changeTitleInput(active) {
@@ -59,13 +74,17 @@ class TodoItem extends Component {
         const titleDisplay = this.state.titleChange && !this.props.todo.isComplete ?
             <form onSubmit={this.updateTitle}>
                 <Input
+                    focus
                     id={`title${this.props.todo.id}`}
                     className='new-title-input'
                     value={this.state.newTitle}
                     onChange={this.handleChange}
                 />
             </form> :
-            <p id={`title${this.props.todo.id}`} className={titleClass} onClick={() => this.changeTitleInput(true)}> {this.props.todo.title} </p>;
+            <p
+                id={`title${this.props.todo.id}`}
+                className={titleClass}
+                onClick={() => this.changeTitleInput(true)}> {this.props.todo.title} </p>;
         
         const completeButton =
             <Button id='complete' icon positive onClick={this.clickUpdateTodo}>
