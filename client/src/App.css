@@ -38,13 +38,8 @@
 
 .top-row {
     text-align: left;
-    overflow: hidden;
 }
 
 .delete-completed {
     float: right;
-}
-
-.todo-list {
-    margin-bottom: 1em !important;
 }

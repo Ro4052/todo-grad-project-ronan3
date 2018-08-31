@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Segment, Input, Button } from 'semantic-ui-react';
+import { Segment, List, Input, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -12,8 +12,10 @@ class App extends Component {
         super(props);
         this.state = {
             todos: [],
+            filter: 'all',
             newTitle: ''
         }
+        this.updateFilter = this.updateFilter.bind(this);
         this.updateNewTitle = this.updateNewTitle.bind(this);
         this.createTodo = this.createTodo.bind(this);
         this.updateTodo = this.updateTodo.bind(this);
@@ -29,6 +31,12 @@ class App extends Component {
                     todos: res.data
                 });
             });
+    }
+
+    updateFilter(event) {
+        this.setState({
+            filter: event.target.id
+        });
     }
 
     updateNewTitle(event) {
@@ -104,9 +112,14 @@ class App extends Component {
     }
 
     render() {
-        const displayList = this.state.todos.map(todo => 
-            <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />
-        );
+        const displayList = this.state.todos.map(todo => {
+            if (this.state.filter === 'all' || (this.state.filter === 'active' && !todo.isComplete) ||
+                (this.state.filter === 'completed' && todo.isComplete)) {
+                    return <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />
+            }
+            return null;
+        });
+        const numCompleted = this.state.todos.filter(todo => todo.isComplete).length;
 
         return (
             <div className='App'>
@@ -114,16 +127,24 @@ class App extends Component {
                     <img src={logo} className='App-logo' alt='logo' />
                     <h1 className='App-title'> TODO List </h1>
                 </header>
-                <div className="holder">
-                    <Segment className="top-row">
-                        <Button negative className="delete-completed" onClick={this.deleteCompleted}> Delete Completed </Button>
+                <div className='holder'>
+                    <Segment className='top-row'>
+                        <Button.Group>
+                            <Button id='all' onClick={this.updateFilter}> All </Button>
+                            <Button id='active' onClick={this.updateFilter}> Active </Button>
+                            <Button id='completed' onClick={this.updateFilter}> Completed </Button>
+                        </Button.Group>
+                        <Button
+                            negative
+                            disabled={numCompleted === 0}
+                            className='delete-completed'
+                            onClick={this.deleteCompleted}> Delete Completed </Button>
                     </Segment>
-                    <List divided className='todo-list'>
+                    <List celled>
                         {displayList.length ? displayList : 'No todos, create one below!'}
                     </List>
                     <form>
                         <Input
-                            className='create-input'
                             action={ <Button content='Create' onClick={this.createTodo} /> }
                             value={this.state.newTitle}
                             onChange={this.updateNewTitle}
