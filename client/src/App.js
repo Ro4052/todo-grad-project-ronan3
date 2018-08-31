@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { List, Input, Button } from 'semantic-ui-react';
+import { Icon, List, Input, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import 'semantic-ui-css/semantic.min.css';
 
 import TodoItem from './TodoItem/TodoItem';
 import TopRow from './TopRow/TopRow';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -125,7 +124,7 @@ class App extends Component {
         return (
             <div className='App'>
                 <header className='App-header'>
-                    <img src={logo} className='App-logo' alt='logo' />
+                    <Icon name='huge edit' />
                     <h1 className='App-title'> TODO List </h1>
                 </header>
                 <div className='holder'>
