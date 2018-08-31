@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Input, Button } from 'semantic-ui-react';
+import { List, Segment, Input, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -18,6 +18,7 @@ class App extends Component {
         this.createTodo = this.createTodo.bind(this);
         this.updateTodo = this.updateTodo.bind(this);
         this.deleteTodo = this.deleteTodo.bind(this);
+        this.deleteCompleted = this.deleteCompleted.bind(this);
         this.getTodoList();
     }
 
@@ -38,6 +39,10 @@ class App extends Component {
 
     createTodo(event) {
         event.preventDefault();
+        if (!this.state.newTitle) {
+            return;
+        }
+
         const todo = {
             title: this.state.newTitle,
             isComplete: false
@@ -89,28 +94,43 @@ class App extends Component {
             });
     }
 
+    deleteCompleted() {
+        const todos = this.state.todos;
+        todos.forEach(todo => {
+            if (todo.isComplete) {
+                this.deleteTodo(todo.id);
+            }
+        });
+    }
+
     render() {
         const displayList = this.state.todos.map(todo => 
             <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />
         );
+
         return (
             <div className='App'>
                 <header className='App-header'>
                     <img src={logo} className='App-logo' alt='logo' />
                     <h1 className='App-title'> TODO List </h1>
                 </header>
-                <List divided className='todo-list'>
-                    {displayList.length ? displayList : 'No todos, create one below!'}
-                </List>
-                <form>
-                    <Input
-                        className='create-input'
-                        action={ <Button content='Create' onClick={this.createTodo} /> }
-                        value={this.state.newTitle}
-                        onChange={this.updateNewTitle}
-                        placeholder='Create a new todo...'
-                    />
-                </form>
+                <div className="holder">
+                    <Segment className="top-row">
+                        <Button negative className="delete-completed" onClick={this.deleteCompleted}> Delete Completed </Button>
+                    </Segment>
+                    <List divided className='todo-list'>
+                        {displayList.length ? displayList : 'No todos, create one below!'}
+                    </List>
+                    <form>
+                        <Input
+                            className='create-input'
+                            action={ <Button content='Create' onClick={this.createTodo} /> }
+                            value={this.state.newTitle}
+                            onChange={this.updateNewTitle}
+                            placeholder='Create a new todo...'
+                        />
+                    </form>
+                </div>
             </div>
         );
     }
