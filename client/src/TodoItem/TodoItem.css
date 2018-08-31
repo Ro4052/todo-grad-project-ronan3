@@ -1,12 +1,17 @@
 .list-item {
     padding-top: 1em !important;
     padding-bottom: 1em !important;
+    display: flex !important;
 }
 
 .list-item p {
     font-size: 1.5em;
     float: left;
     margin-bottom: 0;
+    margin-right: 0.5em;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: left;
 }
 
 .list-item div {
