@@ -53,8 +53,7 @@ module.exports = function(port, dirPath, middleware, callback) {
             todos = todos.filter(function(otherTodo) {
                 return otherTodo !== todo;
             });
-            res.status(200);
-            res.json(todos);
+            res.sendStatus(200);
         } else {
             res.sendStatus(404);
         }

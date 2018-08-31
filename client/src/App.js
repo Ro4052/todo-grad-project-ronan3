@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Input, Button } from 'semantic-ui-react';
+import { List, Input, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import 'semantic-ui-css/semantic.min.css';
 
+import TodoItem from './TodoItem/TodoItem';
 import logo from './logo.svg';
 import './App.css';
 
@@ -15,6 +16,7 @@ class App extends Component {
         }
         this.updateNewTitle = this.updateNewTitle.bind(this);
         this.createTodo = this.createTodo.bind(this);
+        this.deleteTodo = this.deleteTodo.bind(this);
         this.getTodoList();
     }
 
@@ -56,9 +58,23 @@ class App extends Component {
             });
     }
 
+    deleteTodo(id) {
+        axios.delete(`/api/todo/${id}`)
+            .then(res => {
+                if (res.status === 200) {
+                    const todos = this.state.todos.filter(todo =>
+                        todo.id !== id
+                    );
+                    this.setState({
+                        todos: todos
+                    });
+                }
+            });
+    }
+
     render() {
         const displayList = this.state.todos.map(todo => 
-            <div key={todo.id}> {todo.title} </div>
+            <TodoItem key={todo.id} id={todo.id} deleteTodo={this.deleteTodo} todo={todo} />
         );
         return (
             <div className='App'>
@@ -66,12 +82,17 @@ class App extends Component {
                     <img src={logo} className='App-logo' alt='logo' />
                     <h1 className='App-title'> TODO List </h1>
                 </header>
-                <div className='todo-list'>
+                <List className='todo-list'>
                     {displayList.length ? displayList : 'No todos, create one below!'}
-                </div>
+                </List>
                 <form>
-                    <Input className='create-input' value={this.state.newTitle} onChange={this.updateNewTitle} placeholder='Create a new todo...' />
-                    <Button type='submit' onClick={this.createTodo}> Create </Button>
+                    <Input
+                        className='create-input'
+                        action={ <Button content='Create' onClick={this.createTodo} /> }
+                        value={this.state.newTitle}
+                        onChange={this.updateNewTitle}
+                        placeholder='Create a new todo...'
+                    />
                 </form>
             </div>
         );

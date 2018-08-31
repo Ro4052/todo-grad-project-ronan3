@@ -29,9 +29,11 @@
 }
 
 .todo-list {
-    padding-top: 1em;
-    padding-bottom: 1em;
-    width: 50%;
+    position: relative;
+    margin-top: 2em !important;
+    margin-bottom: 1em !important;
+    transform: translate(-50%);
+    left: 50%;
+    width: 50em;
     margin: auto;
-    font-size: 1.5em;
 }
