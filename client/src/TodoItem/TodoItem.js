@@ -10,14 +10,24 @@ class TodoItem extends Component {
             titleChange: false,
             newTitle: this.props.todo.title
         }
-        document.addEventListener('click', this.pageClick.bind(this), true);
-        document.addEventListener('keydown', this.detectEscape.bind(this), true);
+        this.pageClick = this.pageClick.bind(this);
+        this.detectEscape = this.detectEscape.bind(this);
         this.closeInput = this.closeInput.bind(this);
         this.changeTitleInput = this.changeTitleInput.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.updateTitle = this.updateTitle.bind(this);
         this.clickDelete = this.clickDelete.bind(this);
         this.clickUpdateTodo = this.clickUpdateTodo.bind(this);
+    }
+
+    componentDidMount() {
+        document.addEventListener('click', this.pageClick, true);
+        document.addEventListener('keydown', this.detectEscape, true);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.pageClick, true);
+        document.removeEventListener('keydown', this.detectEscape, true);
     }
 
     pageClick(event) {
