@@ -30,11 +30,7 @@ module.exports = function(port, dirPath, middleware, callback) {
         if (todo) {
             todo.title = req.body.title;
             todo.isComplete = req.body.isComplete;
-            res.status(201);
-            res.json({
-                newId: todo.id,
-                todos: todos
-            });
+            res.sendStatus(201);
         } else {
             res.sendStatus(404);
         }

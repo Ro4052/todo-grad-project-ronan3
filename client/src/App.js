@@ -16,6 +16,7 @@ class App extends Component {
         }
         this.updateNewTitle = this.updateNewTitle.bind(this);
         this.createTodo = this.createTodo.bind(this);
+        this.updateTodo = this.updateTodo.bind(this);
         this.deleteTodo = this.deleteTodo.bind(this);
         this.getTodoList();
     }
@@ -58,6 +59,22 @@ class App extends Component {
             });
     }
 
+    updateTodo(todo) {
+        axios.put(`/api/todo/${todo.id}`, {
+                title: todo.title,
+                isComplete: todo.isComplete
+            })
+            .then(res => {
+                if (res.status === 201) {
+                    const todos = this.state.todos;
+                    todos[todos.indexOf(todo)] = todo;
+                    this.setState({
+                        todos: todos
+                    });
+                }
+            })
+    }
+
     deleteTodo(id) {
         axios.delete(`/api/todo/${id}`)
             .then(res => {
@@ -74,7 +91,7 @@ class App extends Component {
 
     render() {
         const displayList = this.state.todos.map(todo => 
-            <TodoItem key={todo.id} id={todo.id} deleteTodo={this.deleteTodo} todo={todo} />
+            <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />
         );
         return (
             <div className='App'>
@@ -82,7 +99,7 @@ class App extends Component {
                     <img src={logo} className='App-logo' alt='logo' />
                     <h1 className='App-title'> TODO List </h1>
                 </header>
-                <List className='todo-list'>
+                <List divided className='todo-list'>
                     {displayList.length ? displayList : 'No todos, create one below!'}
                 </List>
                 <form>
