@@ -1,13 +1,47 @@
 import React, { Component } from 'react';
-import { List, Button, Icon } from 'semantic-ui-react';
+import { List, Input, Button, Icon } from 'semantic-ui-react';
 
 import './TodoItem.css';
 
 class TodoItem extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            titleChange: false,
+            newTitle: this.props.todo.title
+        }
+        document.addEventListener('click', this.pageClick.bind(this), true);
+        this.changeTitleInput = this.changeTitleInput.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.updateTitle = this.updateTitle.bind(this);
         this.clickDelete = this.clickDelete.bind(this);
         this.clickUpdateTodo = this.clickUpdateTodo.bind(this);
+    }
+
+    pageClick(event) {
+        if (event.target.id !== `title${this.props.todo.id}`) {
+            this.changeTitleInput(false);
+        }
+    }
+    
+    changeTitleInput(active) {
+        this.setState({
+            titleChange: active
+        });
+    }
+
+    handleChange(event) {
+        this.setState({
+            newTitle: event.target.value
+        });
+    }
+
+    updateTitle(event) {
+        event.preventDefault();
+        const todo = this.props.todo;
+        todo.title = this.state.newTitle;
+        this.props.updateTodo(todo);
+        this.changeTitleInput(false);
     }
 
     clickUpdateTodo(event) {
@@ -21,6 +55,18 @@ class TodoItem extends Component {
     }
 
     render() {
+        const titleClass = this.props.todo.isComplete ? 'completed-todo' : null;
+        const titleDisplay = this.state.titleChange && !this.props.todo.isComplete ?
+            <form onSubmit={this.updateTitle}>
+                <Input
+                    id={`title${this.props.todo.id}`}
+                    className='new-title-input'
+                    value={this.state.newTitle}
+                    onChange={this.handleChange}
+                />
+            </form> :
+            <p id={`title${this.props.todo.id}`} className={titleClass} onClick={() => this.changeTitleInput(true)}> {this.props.todo.title} </p>;
+        
         const completeButton =
             <Button id='complete' icon positive onClick={this.clickUpdateTodo}>
                 <Icon id='complete' name='thumbs up' />
@@ -29,12 +75,13 @@ class TodoItem extends Component {
             <Button id='revert' icon primary onClick={this.clickUpdateTodo}>
                 <Icon id='revert' name='undo' />
             </Button>;
-        const titleClass = this.props.todo.isComplete ? 'completed-todo' : null;
 
         return (
             <List.Item className='list-item'>
-                <p className={titleClass}> {this.props.todo.title} </p>
-                <div>
+                <div className='title-holder'>
+                    {titleDisplay}
+                </div>
+                <div className='action-buttons'>
                     {this.props.todo.isComplete ? revertButton : completeButton}
                     <Button icon onClick={this.clickDelete}>
                         <Icon color='red' name='trash' />
