@@ -1,6 +1,6 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var underscore = require("underscore");
+var express = require('express');
+var bodyParser = require('body-parser');
+var underscore = require('underscore');
 
 module.exports = function(port, dirPath, middleware, callback) {
     var app = express();
@@ -15,7 +15,7 @@ module.exports = function(port, dirPath, middleware, callback) {
     var todos = [];
 
     // Create
-    app.post("/api/todo", function(req, res) {
+    app.post('/api/todo', function(req, res) {
         var todo = req.body;
         todo.id = latestId.toString();
         latestId++;
@@ -25,7 +25,7 @@ module.exports = function(port, dirPath, middleware, callback) {
     });
 
     // Update
-    app.put("/api/todo/:id", function(req, res) {
+    app.put('/api/todo/:id', function(req, res) {
         var todo = getTodo(req.params.id);
         if (todo) {
             todo.title = req.body.title;
@@ -37,12 +37,12 @@ module.exports = function(port, dirPath, middleware, callback) {
     });
 
     // Read
-    app.get("/api/todo", function(req, res) {
+    app.get('/api/todo', function(req, res) {
         res.json(todos);
     });
 
     // Delete
-    app.delete("/api/todo/:id", function(req, res) {
+    app.delete('/api/todo/:id', function(req, res) {
         var id = req.params.id;
         var todo = getTodo(id);
         if (todo) {
@@ -65,7 +65,7 @@ module.exports = function(port, dirPath, middleware, callback) {
 
     // We manually manage the connections to ensure that they're closed when calling close().
     var connections = [];
-    server.on("connection", function(connection) {
+    server.on('connection', function(connection) {
         connections.push(connection);
     });
 

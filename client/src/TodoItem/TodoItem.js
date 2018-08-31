@@ -12,7 +12,7 @@ class TodoItem extends Component {
 
     clickUpdateTodo(event) {
         const todo = this.props.todo;
-        todo.isComplete = event.target.id === "complete" ? true : false;
+        todo.isComplete = event.target.id === 'complete' ? true : false;
         this.props.updateTodo(todo);
     }
 
@@ -22,12 +22,12 @@ class TodoItem extends Component {
 
     render() {
         const completeButton =
-            <Button icon positive onClick={this.clickUpdateTodo}>
-                <Icon id="complete" name='thumbs up' />
+            <Button id='complete' icon positive onClick={this.clickUpdateTodo}>
+                <Icon id='complete' name='thumbs up' />
             </Button>;
         const revertButton =
-            <Button icon primary onClick={this.clickUpdateTodo}>
-                <Icon id="revert" name='undo' />
+            <Button id='revert' icon primary onClick={this.clickUpdateTodo}>
+                <Icon id='revert' name='undo' />
             </Button>;
         const titleClass = this.props.todo.isComplete ? 'completed-todo' : null;
 
