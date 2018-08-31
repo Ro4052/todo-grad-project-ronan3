@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Segment, List, Input, Button } from 'semantic-ui-react';
+import { List, Input, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import 'semantic-ui-css/semantic.min.css';
 
 import TodoItem from './TodoItem/TodoItem';
+import TopRow from './TopRow/TopRow';
 import logo from './logo.svg';
 import './App.css';
 
@@ -128,18 +129,7 @@ class App extends Component {
                     <h1 className='App-title'> TODO List </h1>
                 </header>
                 <div className='holder'>
-                    <Segment className='top-row'>
-                        <Button.Group>
-                            <Button id='all' onClick={this.updateFilter}> All </Button>
-                            <Button id='active' onClick={this.updateFilter}> Active </Button>
-                            <Button id='completed' onClick={this.updateFilter}> Completed </Button>
-                        </Button.Group>
-                        <Button
-                            negative
-                            disabled={numCompleted === 0}
-                            className='delete-completed'
-                            onClick={this.deleteCompleted}> Delete Completed </Button>
-                    </Segment>
+                    <TopRow numCompleted={numCompleted} updateFilter={this.updateFilter} deleteCompleted={this.deleteCompleted} />
                     <List celled>
                         {displayList.length ? displayList : 'No todos, create one below!'}
                     </List>
