@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "node server.js",
+    "test": "gulp test",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
