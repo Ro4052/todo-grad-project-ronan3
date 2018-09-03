@@ -62,7 +62,7 @@ class App extends Component {
             .then(res => {
                 if (res.status === 201) {
                     const todos = this.state.todos;
-                    todo.id = res.data;
+                    todo.id = res.data.toString();
                     todos.push(todo);
                     this.setState({
                         createTitle: '',
@@ -124,7 +124,7 @@ class App extends Component {
         return (
             <div className='App'>
                 <header className='App-header'>
-                    <Icon name='huge edit' />
+                    <Icon name='edit' size='huge' />
                     <h1 className='App-title'> TODO List </h1>
                 </header>
                 <div className='holder'>
