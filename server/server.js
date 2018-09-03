@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var underscore = require('underscore');
+var _ = require('underscore');
 
 module.exports = function (port, dirPath, middleware, callback) {
   var app = express();
@@ -56,7 +56,7 @@ module.exports = function (port, dirPath, middleware, callback) {
   });
 
   function getTodo(id) {
-    return underscore.find(todos, function (todo) {
+    return _.find(todos, function (todo) {
       return todo.id === id
     });
   }

@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
-var spawn = require('child_process').spawn;
+var childProc = require('child_process');
 
 var node;
 
@@ -33,7 +33,7 @@ gulp.task('serve', function () {
   if (node) {
     node.kill();
   }
-  node = spawn('node', ['server.js'], { stdio: 'inherit' });
+  node = childProc.spawn('node', ['server.js'], { stdio: 'inherit' });
   node.on('close', function (code) {
     if (code === 8) {
       gulp.log('Error detected');
@@ -43,6 +43,7 @@ gulp.task('serve', function () {
 
 gulp.task('test', ['test:istanbul']);
 gulp.task('default', ['serve'], function () {
+  childProc.exec('npm start', {cwd: './client'});
   gulp.watch('server/*', ['serve']);
 });
 
