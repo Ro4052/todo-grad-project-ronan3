@@ -1,31 +1,31 @@
 .list-item {
-    padding-top: 1em !important;
-    padding-bottom: 1em !important;
-    display: flex !important;
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
+  display: flex !important;
 }
 
 .list-item p {
-    font-size: 1.5em;
-    margin: 0;
-    cursor: pointer;
-    height: 100%;
+  font-size: 1.5em;
+  margin: 0;
+  cursor: pointer;
+  height: 100%;
 }
 
 .title-holder {
-    flex-grow: 1;
-    margin-right: 0.5em;
-    text-align: left;
+  flex-grow: 1;
+  margin-right: 0.5em;
+  text-align: left;
 }
 
 .new-title-input {
-    width: 100%;
+  width: 100%;
 }
 
 .action-buttons {
-    float: right;
+  float: right;
 }
 
 .completed-todo {
-    opacity: 0.5;
-    cursor: default !important;
+  opacity: 0.5;
+  cursor: default !important;
 }
