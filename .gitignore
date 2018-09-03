@@ -10,6 +10,8 @@
 # production
 /build
 
+/build_artifacts
+
 # misc
 .DS_Store
 .env.local
