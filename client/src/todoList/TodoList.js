@@ -114,7 +114,7 @@ class TodoList extends Component {
     const displayList = this.state.todos.map(todo => {
       if (this.state.filter === 'all' || (this.state.filter === 'active' && !todo.isComplete) ||
         (this.state.filter === 'completed' && todo.isComplete)) {
-        return <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />
+        return <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />;
       }
       return null;
     });
