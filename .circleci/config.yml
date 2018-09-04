@@ -15,7 +15,7 @@ jobs:
           command: npm test
       - run:
           name: Run Client Tests
-          command: cd ./client && npm run test -- --coverage
+          command: cd ./client && set CI=true && npm run test
       - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
