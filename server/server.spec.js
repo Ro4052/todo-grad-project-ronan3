@@ -11,9 +11,11 @@ describe('server', function () {
   beforeEach(function () {
     serverInstance = server(testPort, __dirname);
   });
+
   afterEach(function () {
     serverInstance.close();
   });
+  
   describe('get list of todos', function () {
     it('responds with status code 200', function (done) {
       request(todoListUrl, function (error, response) {
