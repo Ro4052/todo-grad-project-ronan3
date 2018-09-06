@@ -35,6 +35,7 @@ module.exports = function (port, dirPath, middleware, callback) {
     if (todo) {
       todo.title = req.body.title;
       todo.isComplete = req.body.isComplete;
+      db.update(todo);
       res.sendStatus(201);
     } else {
       res.sendStatus(404);

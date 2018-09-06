@@ -38,6 +38,21 @@ module.exports.add = (todo) => {
   });
 }
 
+module.exports.update = (todo) => {
+  collection.updateOne({
+    _id: todo.dbId
+  }, {
+    $set: {
+      title: todo.title,
+      isComplete: todo.isComplete
+    }
+  }, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+}
+
 module.exports.delete = (id) => {
   collection.deleteOne({ _id: id }, (err) => {
     if (err) {
