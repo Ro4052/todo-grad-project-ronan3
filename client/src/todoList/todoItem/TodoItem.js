@@ -8,7 +8,8 @@ class TodoItem extends Component {
     super(props);
     this.state = {
       titleChange: false,
-      newTitle: this.props.todo.title
+      newTitle: this.props.todo.title,
+      editInputError: false
     }
     this.pageClick = this.pageClick.bind(this);
     this.detectEscape = this.detectEscape.bind(this);
@@ -57,12 +58,20 @@ class TodoItem extends Component {
 
   handleChange(event) {
     this.setState({
-      newTitle: event.target.value
+      newTitle: event.target.value,
+      editInputError: false
     });
   }
 
   updateTitle(event) {
     event.preventDefault();
+    if(!this.state.newTitle) {
+      this.setState({
+        editInputError: true
+      });
+      return;
+    }
+    
     const todo = this.props.todo;
     todo.title = this.state.newTitle;
     this.props.updateTodo(todo);
@@ -87,6 +96,7 @@ class TodoItem extends Component {
           focus
           id={`title${this.props.todo.id}`}
           className='new-title-input'
+          error={this.state.editInputError}
           value={this.state.newTitle}
           onChange={this.handleChange}
         />

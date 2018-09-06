@@ -12,7 +12,8 @@ class TodoList extends Component {
     this.state = {
       todos: [],
       filter: 'all',
-      createTitle: ''
+      createTitle: '',
+      inputError: false
     }
     this.updateFilter = this.updateFilter.bind(this);
     this.updateCreateTitle = this.updateCreateTitle.bind(this);
@@ -40,13 +41,17 @@ class TodoList extends Component {
 
   updateCreateTitle(event) {
     this.setState({
-      createTitle: event.target.value
+      createTitle: event.target.value,
+      inputError: false
     });
   }
 
   createTodo(event) {
     event.preventDefault();
     if (!this.state.createTitle) {
+      this.setState({
+        inputError: true
+      });
       return;
     }
 
@@ -114,7 +119,7 @@ class TodoList extends Component {
     const displayList = this.state.todos.map(todo => {
       if (this.state.filter === 'all' || (this.state.filter === 'active' && !todo.isComplete) ||
         (this.state.filter === 'completed' && todo.isComplete)) {
-        return <TodoItem key={todo.id} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} todo={todo} />;
+        return <TodoItem key={todo.id} todo={todo} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} />;
       }
       return null;
     });
@@ -129,6 +134,7 @@ class TodoList extends Component {
         <form>
           <Input
             action={ <Button content='Create' onClick={this.createTodo} /> }
+            error={this.state.inputError}
             value={this.state.createTitle}
             onChange={this.updateCreateTitle}
             placeholder='Create a new todo...'
