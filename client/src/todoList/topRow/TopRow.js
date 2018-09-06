@@ -14,7 +14,7 @@ class TopRow extends Component {
         </Button.Group>
         <Button
           negative
-          disabled={this.props.numCompleted === 0}
+          disabled={!this.props.numCompleted}
           className='delete-completed'
           onClick={this.props.deleteCompleted}> Delete Completed </Button>
       </Segment>
