@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 
+var db = require('./db');
+
 module.exports = function (port, dirPath, middleware, callback) {
   var app = express();
 
@@ -22,6 +24,7 @@ module.exports = function (port, dirPath, middleware, callback) {
     todos.push(todo);
     res.status(201);
     res.send(todo.id);
+    db.add(todo);
   });
 
   // Update
