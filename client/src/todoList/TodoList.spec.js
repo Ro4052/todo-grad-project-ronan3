@@ -30,34 +30,6 @@ describe('<TodoList /> tests', () => {
       });
     });
   });
-  it('updates the state when typing in the input', (done) => {
-    const wrapper = shallow(<TodoList />);
-    moxios.wait(() => {
-      const getRequest = moxios.requests.mostRecent();
-      getRequest.respondWith({
-        response: getResponse
-      }).then(() => {
-        wrapper.find('Input').simulate('change', { target: { value: 'new title' } });
-        expect(wrapper.state().createTitle).toEqual('new title');
-        done();
-      });
-    });
-  });
-  it('creates a new todo', (done) => {
-    const wrapper = mount(<TodoList />);
-    wrapper.setState({ createTitle: 'new title' });
-    wrapper.find('Button').last().simulate('click');
-    moxios.wait(() => {
-      const putRequest = moxios.requests.mostRecent();
-      putRequest.respondWith({
-        status: 201,
-        response: 2
-      }).then(() => {
-        expect(wrapper.state().todos.length).toEqual(1);
-        done();
-      });
-    });
-  });
   it('filters by active when relavant button is clicked', (done) => {
     const wrapper = mount(<TodoList />);
     wrapper.setState({ todos: getResponse });
