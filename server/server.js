@@ -23,8 +23,10 @@ module.exports = function (port, dirPath, middleware, callback) {
     latestId++;
     todos.push(todo);
     res.status(201);
-    res.send(todo.id);
-    db.add(todo);
+    db.add(todo).then((dbTodo) => {
+      todo.dbId = dbTodo.insertedId;
+      res.send(todo.id);
+    });
   });
 
   // Update
@@ -47,6 +49,8 @@ module.exports = function (port, dirPath, middleware, callback) {
         latestId = todos.length;
         res.json(todos);
       });
+    } else {
+      res.json(todos);
     }
   });
 
@@ -56,7 +60,11 @@ module.exports = function (port, dirPath, middleware, callback) {
     const todo = getTodo(id);
     if (todo) {
       todos = todos.filter(function (otherTodo) {
-        return otherTodo !== todo;
+        if (otherTodo === todo) {
+          db.delete(todo.dbId);
+          return false;
+        }
+        return true;
       });
       res.sendStatus(200);
     } else {

@@ -2,7 +2,7 @@ var mongodb = require('mongodb');
 var Promise = require('promise');
 
 const MongoClient = mongodb.MongoClient, format = require('util').format;
-var db;
+var collection;
 MongoClient.connect('mongodb://ds113738.mlab.com:13738/todo-grad-project',
   {
     useNewUrlParser: true,
@@ -12,21 +12,21 @@ MongoClient.connect('mongodb://ds113738.mlab.com:13738/todo-grad-project',
     }
   }, (err, client) => {
   console.log('Connecting to DB client');
-  if(err) {
+  if (err) {
       console.log('Failed to connect to DB', err);
       return;
   }
-  db = client.db('todo-grad-project');
+  collection = client.db('todo-grad-project').collection('todos');
   console.log('DB client connected');
 });
 
 module.exports.add = (todo) => {
   return new Promise((resolve, reject) => {
-    db.collection('todos').insertOne({
+    collection.insertOne({
       title: todo.title,
       isComplete: todo.isComplete
     }, (err, todo) => {
-      if(err) {
+      if (err) {
         reject({
           code: 500,
           msg: err
@@ -38,10 +38,18 @@ module.exports.add = (todo) => {
   });
 }
 
+module.exports.delete = (id) => {
+  collection.deleteOne({ _id: id }, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+}
+
 module.exports.getAllTodos = () => {
   return new Promise((resolve, reject) => {
-    db.collection('todos').find().toArray((err, todoDocs) => {
-      if(err) {
+    collection.find().toArray((err, todoDocs) => {
+      if (err) {
         reject({
           code: 500,
           msg: err
@@ -49,9 +57,10 @@ module.exports.getAllTodos = () => {
       }
       resolve(todoDocs.map((item, index) => {
         return {
-          id: index,
+          id: index.toString(),
           title: item.title,
-          isComplete: item.isComplete
+          isComplete: item.isComplete === 'true',
+          dbId: item._id
         }
       }));
     });
