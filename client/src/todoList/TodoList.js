@@ -122,7 +122,7 @@ class TodoList extends Component {
         </List>
         <TitleInput
           action='Create'
-          todoItem={false}
+          fullWidth={false}
           placeholder='Create a new todo...'
           initialText=''
           handleSubmit={this.createTodo} />

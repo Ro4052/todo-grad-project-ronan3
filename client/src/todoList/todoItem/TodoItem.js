@@ -76,7 +76,7 @@ class TodoItem extends Component {
     const titleDisplay = this.state.titleChange && !this.props.todo.isComplete ?
       <TitleInput
         inputId={`title${this.props.todo.id}`}
-        todoItem={true}
+        fullWidth={true}
         action={null}
         placeholder={null}
         initialText={this.props.todo.title}

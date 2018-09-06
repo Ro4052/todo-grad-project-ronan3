@@ -41,7 +41,7 @@ class TitleInput extends Component {
       <form onSubmit={this.submitText}>
         <Input
           id={this.props.inputId}
-          className={this.props.todoItem ? 'new-title-input' : null}
+          className={this.props.fullWidth ? 'full-width' : null}
           action={this.props.action}
           error={this.state.inputError}
           value={this.state.text}
