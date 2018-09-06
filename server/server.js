@@ -5,7 +5,7 @@ var _ = require('underscore');
 var db = require('./db');
 
 module.exports = function (port, dirPath, middleware, callback) {
-  var app = express();
+  const app = express();
 
   if (middleware) {
     app.use(middleware);
@@ -13,12 +13,12 @@ module.exports = function (port, dirPath, middleware, callback) {
   app.use(express.static(dirPath));
   app.use(bodyParser.json());
 
-  var latestId = 0;
-  var todos = [];
+  let latestId = 0;
+  let todos = [];
 
   // Create
   app.post('/api/todo', function (req, res) {
-    var todo = req.body;
+    const todo = req.body;
     todo.id = latestId.toString();
     latestId++;
     todos.push(todo);
@@ -29,7 +29,7 @@ module.exports = function (port, dirPath, middleware, callback) {
 
   // Update
   app.put('/api/todo/:id', function (req, res) {
-    var todo = getTodo(req.params.id);
+    const todo = getTodo(req.params.id);
     if (todo) {
       todo.title = req.body.title;
       todo.isComplete = req.body.isComplete;
@@ -41,13 +41,19 @@ module.exports = function (port, dirPath, middleware, callback) {
 
   // Read
   app.get('/api/todo', function (req, res) {
-    res.json(todos);
+    if (!latestId) {
+      db.getAllTodos().then((dbTodos) => {
+        todos = dbTodos;
+        latestId = todos.length;
+        res.json(todos);
+      });
+    }
   });
 
   // Delete
   app.delete('/api/todo/:id', function (req, res) {
-    var id = req.params.id;
-    var todo = getTodo(id);
+    const id = req.params.id;
+    const todo = getTodo(id);
     if (todo) {
       todos = todos.filter(function (otherTodo) {
         return otherTodo !== todo;
@@ -64,10 +70,10 @@ module.exports = function (port, dirPath, middleware, callback) {
     });
   }
 
-  var server = app.listen(port, callback);
+  const server = app.listen(port, callback);
 
   // We manually manage the connections to ensure that they're closed when calling close().
-  var connections = [];
+  const connections = [];
   server.on('connection', function (connection) {
     connections.push(connection);
   });

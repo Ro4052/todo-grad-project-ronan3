@@ -12,7 +12,7 @@ MongoClient.connect('mongodb://ds113738.mlab.com:13738/todo-grad-project',
     }
   }, (err, client) => {
   console.log('Connecting to DB client');
-  if (err) {
+  if(err) {
       console.log('Failed to connect to DB', err);
       return;
   }
@@ -34,6 +34,26 @@ module.exports.add = (todo) => {
       } else {
         resolve(todo);
       }
+    });
+  });
+}
+
+module.exports.getAllTodos = () => {
+  return new Promise((resolve, reject) => {
+    db.collection('todos').find().toArray((err, todoDocs) => {
+      if(err) {
+        reject({
+          code: 500,
+          msg: err
+        });
+      }
+      resolve(todoDocs.map((item, index) => {
+        return {
+          id: index,
+          title: item.title,
+          isComplete: item.isComplete
+        }
+      }));
     });
   });
 }
