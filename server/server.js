@@ -2,9 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 
-var db = require('./db');
-
-module.exports = function (port, dirPath, middleware, callback) {
+module.exports = function (port, dirPath, db, middleware, callback) {
   const app = express();
 
   if (middleware) {
