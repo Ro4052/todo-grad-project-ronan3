@@ -7,7 +7,7 @@ class TitleInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: this.props.initialText,
+      inputText: this.props.initialText,
       inputError: false
     }
     this.updateText = this.updateText.bind(this);
@@ -16,14 +16,14 @@ class TitleInput extends Component {
 
   updateText(event) {
     this.setState({
-      text: event.target.value,
+      inputText: event.target.value,
       inputError: false
     });
   }
 
   submitText(event) {
     event.preventDefault();
-    if (!this.state.text) {
+    if (!this.state.inputText) {
       this.setState({
         inputError: true
       });
@@ -31,9 +31,9 @@ class TitleInput extends Component {
     }
 
     this.setState({
-      text: this.props.initialText
+      inputText: this.props.initialText
     });
-    this.props.handleSubmit(this.state.text);
+    this.props.handleSubmit(this.state.inputText);
   }
 
   render() {
@@ -44,7 +44,7 @@ class TitleInput extends Component {
           className={this.props.fullWidth ? 'full-width' : null}
           action={this.props.action}
           error={this.state.inputError}
-          value={this.state.text}
+          value={this.state.inputText}
           onChange={this.updateText}
           placeholder={this.props.placeholder}
         />
