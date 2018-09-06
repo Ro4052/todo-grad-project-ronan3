@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
-import { List, Input, Button, Icon } from 'semantic-ui-react';
+import { List, Button, Icon } from 'semantic-ui-react';
 
+import TitleInput from './../../core/titleInput/TitleInput';
 import './TodoItem.css';
 
 class TodoItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleChange: false,
-      newTitle: this.props.todo.title,
-      editInputError: false
+      titleChange: false
     }
     this.pageClick = this.pageClick.bind(this);
     this.detectEscape = this.detectEscape.bind(this);
     this.closeInput = this.closeInput.bind(this);
     this.changeTitleInput = this.changeTitleInput.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
     this.clickDelete = this.clickDelete.bind(this);
     this.clickUpdateTodo = this.clickUpdateTodo.bind(this);
@@ -56,24 +54,9 @@ class TodoItem extends Component {
     });
   }
 
-  handleChange(event) {
-    this.setState({
-      newTitle: event.target.value,
-      editInputError: false
-    });
-  }
-
-  updateTitle(event) {
-    event.preventDefault();
-    if(!this.state.newTitle) {
-      this.setState({
-        editInputError: true
-      });
-      return;
-    }
-    
+  updateTitle(newTitle) {    
     const todo = this.props.todo;
-    todo.title = this.state.newTitle;
+    todo.title = newTitle;
     this.props.updateTodo(todo);
     this.changeTitleInput(false);
   }
@@ -91,16 +74,13 @@ class TodoItem extends Component {
   render() {
     const titleClass = this.props.todo.isComplete ? 'completed-todo' : null;
     const titleDisplay = this.state.titleChange && !this.props.todo.isComplete ?
-      <form onSubmit={this.updateTitle}>
-        <Input
-          focus
-          id={`title${this.props.todo.id}`}
-          className='new-title-input'
-          error={this.state.editInputError}
-          value={this.state.newTitle}
-          onChange={this.handleChange}
-        />
-      </form> :
+      <TitleInput
+        inputId={`title${this.props.todo.id}`}
+        todoItem={true}
+        action={null}
+        placeholder={null}
+        initialText={this.props.todo.title}
+        handleSubmit={this.updateTitle} /> :
       <p
         id={`title${this.props.todo.id}`}
         className={titleClass}

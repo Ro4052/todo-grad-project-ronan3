@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { List, Input, Button } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 import axios from 'axios';
 
 import TodoItem from './todoItem/TodoItem';
 import TopRow from './topRow/TopRow';
+import TitleInput from './../core/titleInput/TitleInput';
 import './TodoList.css';
 
 class TodoList extends Component {
@@ -11,12 +12,9 @@ class TodoList extends Component {
     super(props);
     this.state = {
       todos: [],
-      filter: 'all',
-      createTitle: '',
-      inputError: false
+      filter: 'all'
     }
     this.updateFilter = this.updateFilter.bind(this);
-    this.updateCreateTitle = this.updateCreateTitle.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
@@ -46,17 +44,9 @@ class TodoList extends Component {
     });
   }
 
-  createTodo(event) {
-    event.preventDefault();
-    if (!this.state.createTitle) {
-      this.setState({
-        inputError: true
-      });
-      return;
-    }
-
+  createTodo(newTitle) {
     const todo = {
-      title: this.state.createTitle,
+      title: newTitle,
       isComplete: false
     }
     axios.post('/api/todo', {
@@ -69,7 +59,6 @@ class TodoList extends Component {
           todo.id = res.data.toString();
           todos.push(todo);
           this.setState({
-            createTitle: '',
             todos: todos
           });
         }
@@ -131,15 +120,12 @@ class TodoList extends Component {
         <List celled>
           {displayList.length ? displayList : 'No todos, create one below!'}
         </List>
-        <form>
-          <Input
-            action={ <Button content='Create' onClick={this.createTodo} /> }
-            error={this.state.inputError}
-            value={this.state.createTitle}
-            onChange={this.updateCreateTitle}
-            placeholder='Create a new todo...'
-          />
-        </form>
+        <TitleInput
+          action='Create'
+          todoItem={false}
+          placeholder='Create a new todo...'
+          initialText=''
+          handleSubmit={this.createTodo} />
       </div>
     );
   }
