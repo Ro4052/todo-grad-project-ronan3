@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 
-module.exports = function (port, dirPath, db, middleware, callback) {
+module.exports = (port, dirPath, db, middleware, callback) => {
   const app = express();
   db.connect();
 
@@ -13,7 +13,7 @@ module.exports = function (port, dirPath, db, middleware, callback) {
   app.use(bodyParser.json());
 
   // Create
-  app.post('/api/todo', function (req, res) {
+  app.post('/api/todo', (req, res) => {
     const todo = req.body;
     db.add(todo).then((id) => {
       todo.id = id;
@@ -26,7 +26,7 @@ module.exports = function (port, dirPath, db, middleware, callback) {
   });
 
   // Update
-  app.put('/api/todo/:id', function (req, res) {
+  app.put('/api/todo/:id', (req, res) => {
     const todo = req.body;
     todo.id = req.params.id;
     db.update(todo).then(() => {
@@ -38,7 +38,7 @@ module.exports = function (port, dirPath, db, middleware, callback) {
   });
 
   // Read
-  app.get('/api/todo', function (req, res) {
+  app.get('/api/todo', (req, res) => {
     db.getAllTodos().then((todos) => {
       res.status(200);
       res.json(todos);
@@ -49,8 +49,18 @@ module.exports = function (port, dirPath, db, middleware, callback) {
   });
 
   // Delete
-  app.delete('/api/todo/:id', function (req, res) {
+  app.delete('/api/todo/:id', (req, res) => {
     db.delete(req.params.id).then(() => {
+      res.sendStatus(200);
+    }).catch((err) => {
+      console.log(err.msg);
+      res.sendStatus(err.code);
+    });
+  });
+
+  // Delete completed
+  app.delete('/api/todo', (req, res) => {
+    db.deleteCompleted().then(() => {
       res.sendStatus(200);
     }).catch((err) => {
       console.log(err.msg);
@@ -62,13 +72,13 @@ module.exports = function (port, dirPath, db, middleware, callback) {
 
   // We manually manage the connections to ensure that they're closed when calling close().
   const connections = [];
-  server.on('connection', function (connection) {
+  server.on('connection', (connection) => {
     connections.push(connection);
   });
 
   return {
-    close: function (callback) {
-      connections.forEach(function (connection) {
+    close: (callback) => {
+      connections.forEach((connection) => {
         connection.destroy();
       });
       server.close(callback);

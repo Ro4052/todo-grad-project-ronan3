@@ -24,7 +24,7 @@ class TodoList extends Component {
 
   getTodoList() {
     axios.get('/api/todo')
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           this.setState({
             todos: res.data
@@ -55,7 +55,7 @@ class TodoList extends Component {
       title: todo.title,
       isComplete: todo.isComplete
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           const todos = this.state.todos;
           todo.id = res.data;
@@ -72,7 +72,7 @@ class TodoList extends Component {
       title: todo.title,
       isComplete: todo.isComplete
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           const todos = this.state.todos;
           todos[todos.indexOf(todo)] = todo;
@@ -85,9 +85,9 @@ class TodoList extends Component {
 
   deleteTodo(id) {
     axios.delete(`/api/todo/${id}`)
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
-          const todos = this.state.todos.filter(todo =>
+          const todos = this.state.todos.filter((todo) =>
             todo.id !== id
           );
           this.setState({
@@ -98,23 +98,28 @@ class TodoList extends Component {
   }
 
   deleteCompleted() {
-    const todos = this.state.todos;
-    todos.forEach(todo => {
-      if (todo.isComplete) {
-        this.deleteTodo(todo.id);
-      }
-    });
+    axios.delete('/api/todo')
+      .then((res) => {
+        if (res.status === 200) {
+          const todos = this.state.todos.filter((todo) =>
+            !todo.isComplete
+          );
+          this.setState({
+            todos: todos
+          });
+        }
+      })
   }
 
   render() {
-    const displayList = this.state.todos.map(todo => {
+    const displayList = this.state.todos.map((todo, index) => {
       if (this.state.filter === 'all' || (this.state.filter === 'active' && !todo.isComplete) ||
         (this.state.filter === 'completed' && todo.isComplete)) {
-        return <TodoItem key={todo.id} todo={todo} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} />;
+        return <TodoItem key={index} todo={todo} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo} />;
       }
       return null;
     });
-    const numCompleted = this.state.todos.filter(todo => todo.isComplete).length;
+    const numCompleted = this.state.todos.filter((todo) => todo.isComplete).length;
 
     return (
       <div className='holder'>

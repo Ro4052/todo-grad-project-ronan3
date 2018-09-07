@@ -77,6 +77,21 @@ module.exports.delete = (id) => {
   });
 }
 
+module.exports.deleteCompleted = () => {
+  return new Promise((resolve, reject) => {
+    collection.deleteMany({ isComplete: true }, (err) => {
+      if (err) {
+        reject({
+          code: 500,
+          msg: err
+        });
+      } else {
+        resolve();
+      }
+    })
+  });
+}
+
 module.exports.getAllTodos = () => {
   return new Promise((resolve, reject) => {
     collection.find().toArray((err, todos) => {
