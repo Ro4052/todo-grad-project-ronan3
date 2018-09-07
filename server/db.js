@@ -86,11 +86,11 @@ module.exports.getAllTodos = () => {
           msg: err
         });
       }
-      resolve(todos.map((item) => {
+      resolve(todos.map((todo) => {
         return {
-          id: item._id,
-          title: item.title,
-          isComplete: item.isComplete === 'true'
+          id: todo._id,
+          title: todo.title,
+          isComplete: todo.isComplete
         }
       }));
     });
