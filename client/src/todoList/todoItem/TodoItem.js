@@ -49,9 +49,11 @@ class TodoItem extends Component {
   }
 
   changeTitleInput(active) {
-    this.setState({
-      titleChange: active
-    });
+    if (!this.props.todo.isComplete) {
+      this.setState({
+        titleChange: active
+      });
+    }
   }
 
   updateTitle(newTitle) {    
@@ -73,11 +75,10 @@ class TodoItem extends Component {
 
   render() {
     const titleClass = this.props.todo.isComplete ? 'completed-todo' : null;
-    const titleDisplay = this.state.titleChange && !this.props.todo.isComplete ?
+    const titleDisplay = this.state.titleChange ?
       <TitleInput
         inputId={`title${this.props.todo.id}`}
         fullWidth={true}
-        action={null}
         placeholder={null}
         initialText={this.props.todo.title}
         handleSubmit={this.updateTitle} /> :
@@ -87,11 +88,11 @@ class TodoItem extends Component {
         onClick={() => this.changeTitleInput(true)}> {this.props.todo.title} </p>;
 
     const completeButton =
-      <Button id='complete' icon positive onClick={this.clickUpdateTodo}>
+      <Button id='complete' disabled={this.state.titleChange} icon positive onClick={this.clickUpdateTodo}>
         <Icon id='complete' name='thumbs up' />
       </Button>;
     const revertButton =
-      <Button id='revert' icon primary onClick={this.clickUpdateTodo}>
+      <Button id='revert' disabled={this.state.titleChange} icon primary onClick={this.clickUpdateTodo}>
         <Icon id='revert' name='undo' />
       </Button>;
 
@@ -102,7 +103,7 @@ class TodoItem extends Component {
         </div>
         <div className='action-buttons'>
           {this.props.todo.isComplete ? revertButton : completeButton}
-          <Button icon onClick={this.clickDelete}>
+          <Button icon disabled={this.state.titleChange} onClick={this.clickDelete}>
             <Icon color='red' name='trash' />
           </Button>
         </div>
