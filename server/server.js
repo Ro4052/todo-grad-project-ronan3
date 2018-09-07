@@ -11,71 +11,49 @@ module.exports = function (port, dirPath, db, middleware, callback) {
   app.use(express.static(dirPath));
   app.use(bodyParser.json());
 
-  let latestId = 0;
-  let todos = [];
-
   // Create
   app.post('/api/todo', function (req, res) {
-    const todo = req.body;
-    todo.id = latestId.toString();
-    latestId++;
-    todos.push(todo);
-    res.status(201);
-    db.add(todo).then((dbTodo) => {
-      todo.dbId = dbTodo.insertedId;
-      res.send(todo.id);
+    db.add(req.body).then((todo) => {
+      res.status(201);
+      res.send(todo.insertedId);
+    }).catch((err) => {
+      console.log(err.msg);
+      res.sendStatus(err.code);
     });
   });
 
   // Update
   app.put('/api/todo/:id', function (req, res) {
-    const todo = getTodo(req.params.id);
-    if (todo) {
-      todo.title = req.body.title;
-      todo.isComplete = req.body.isComplete;
-      db.update(todo);
+    const todo = req.body;
+    todo.id = req.params.id;
+    db.update(todo).then(() => {
       res.sendStatus(201);
-    } else {
-      res.sendStatus(404);
-    }
+    }).catch((err) => {
+      console.log(err.msg);
+      res.sendStatus(err.code);
+    });
   });
 
   // Read
   app.get('/api/todo', function (req, res) {
-    if (!latestId) {
-      db.getAllTodos().then((dbTodos) => {
-        todos = dbTodos;
-        latestId = todos.length;
-        res.json(todos);
-      });
-    } else {
+    db.getAllTodos().then((todos) => {
+      res.status(202);
       res.json(todos);
-    }
+    }).catch((err) => {
+      console.log(err.msg);
+      res.sendStatus(err.code);
+    });
   });
 
   // Delete
   app.delete('/api/todo/:id', function (req, res) {
-    const id = req.params.id;
-    const todo = getTodo(id);
-    if (todo) {
-      todos = todos.filter(function (otherTodo) {
-        if (otherTodo === todo) {
-          db.delete(todo.dbId);
-          return false;
-        }
-        return true;
-      });
+    db.delete(req.params.id).then(() => {
       res.sendStatus(200);
-    } else {
-      res.sendStatus(404);
-    }
-  });
-
-  function getTodo(id) {
-    return _.find(todos, function (todo) {
-      return todo.id === id
+    }).catch((err) => {
+      console.log(err.msg);
+      res.sendStatus(err.code);
     });
-  }
+  });
 
   const server = app.listen(port, callback);
 

@@ -39,43 +39,56 @@ module.exports.add = (todo) => {
 }
 
 module.exports.update = (todo) => {
-  collection.updateOne({
-    _id: todo.dbId
-  }, {
-    $set: {
-      title: todo.title,
-      isComplete: todo.isComplete
-    }
-  }, (err) => {
-    if (err) {
-      console.log(err);
-    }
+  return new Promise((resolve, reject) => {
+    collection.updateOne({
+      _id: new mongodb.ObjectID(todo.id)
+    }, {
+      $set: {
+        title: todo.title,
+        isComplete: todo.isComplete
+      }
+    }, (err) => {
+      if (err) {
+        reject({
+          code: 500,
+          msg: err
+        });
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
 module.exports.delete = (id) => {
-  collection.deleteOne({ _id: id }, (err) => {
-    if (err) {
-      console.log(err);
-    }
+  return new Promise((resolve, reject) => {
+    collection.deleteOne({ _id: new mongodb.ObjectID(id) }, (err) => {
+      if (err) {
+        reject({
+          code: 500,
+          msg: err
+        });
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
 module.exports.getAllTodos = () => {
   return new Promise((resolve, reject) => {
-    collection.find().toArray((err, todoDocs) => {
+    collection.find().toArray((err, todos) => {
       if (err) {
         reject({
           code: 500,
           msg: err
         });
       }
-      resolve(todoDocs.map((item, index) => {
+      resolve(todos.map((item) => {
         return {
-          id: index.toString(),
+          id: item._id,
           title: item.title,
-          isComplete: item.isComplete === 'true',
-          dbId: item._id
+          isComplete: item.isComplete === 'true'
         }
       }));
     });

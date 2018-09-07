@@ -25,9 +25,11 @@ class TodoList extends Component {
   getTodoList() {
     axios.get('/api/todo')
       .then(res => {
-        this.setState({
-          todos: res.data
-        });
+        if (res.status === 202) {
+          this.setState({
+            todos: res.data
+          });
+        }
       });
   }
 
@@ -56,7 +58,7 @@ class TodoList extends Component {
       .then(res => {
         if (res.status === 201) {
           const todos = this.state.todos;
-          todo.id = res.data.toString();
+          todo.id = res.data;
           todos.push(todo);
           this.setState({
             todos: todos
