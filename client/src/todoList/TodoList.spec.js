@@ -23,6 +23,7 @@ describe('<TodoList /> tests', () => {
     moxios.wait(() => {
       const getRequest = moxios.requests.mostRecent();
       getRequest.respondWith({
+        status: 200,
         response: getResponse
       }).then(() => {
         expect(wrapper.state().todos.length).toEqual(2);
