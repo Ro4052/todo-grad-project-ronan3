@@ -21,9 +21,9 @@ module.exports.add = (todo) => {
 
 module.exports.update = (todo) => {
   return new Promise((resolve) => {
-    let copy = todos.find((otherTodo) => {
-      return otherTodo.id === todo.id
-    });
+    let copy = todos.find((otherTodo) =>
+      otherTodo.id === todo.id
+    );
     copy.title = todo.title;
     copy.isComplete = todo.isComplete;
     resolve();
@@ -32,15 +32,24 @@ module.exports.update = (todo) => {
 
 module.exports.delete = (id) => {
   return new Promise((resolve) => {
-    todos = todos.filter((todo) => {
-      return todo.id !== id;
-    });
+    todos = todos.filter((todo) =>
+      todo.id !== id
+    );
     resolve();
   });
 }
 
-module.exports.getAllTodos = () => {
+module.exports.deleteCompleted = () => {
   return new Promise((resolve) => {
-    resolve(todos);
-  });
+    todos = todos.filter((todo) =>
+      !todo.isComplete
+    );
+    resolve();
+  })
+}
+
+module.exports.getAllTodos = () => {
+  return new Promise((resolve) =>
+    resolve(todos)
+  );
 }
