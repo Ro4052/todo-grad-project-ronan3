@@ -34,7 +34,7 @@ module.exports.add = (todo) => {
           msg: err
         });
       } else {
-        resolve(todo);
+        resolve(todo.id);
       }
     });
   });

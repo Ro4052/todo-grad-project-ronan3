@@ -14,9 +14,11 @@ module.exports = function (port, dirPath, db, middleware, callback) {
 
   // Create
   app.post('/api/todo', function (req, res) {
-    db.add(req.body).then((todo) => {
+    const todo = req.body;
+    db.add(todo).then((id) => {
+      todo.id = id;
       res.status(201);
-      res.send(todo.insertedId);
+      res.send(id);
     }).catch((err) => {
       console.log(err.msg);
       res.sendStatus(err.code);
