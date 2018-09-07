@@ -2,6 +2,7 @@ var server = require('./server');
 var request = require('request');
 var assert = require('chai').assert;
 
+var mockDb = require('./mockDb');
 var testPort = 52684;
 var baseUrl = 'http://localhost:' + testPort;
 var todoListUrl = baseUrl + '/api/todo';
@@ -9,10 +10,11 @@ var todoListUrl = baseUrl + '/api/todo';
 describe('server', function () {
   var serverInstance;
   beforeEach(function () {
-    serverInstance = server(testPort, __dirname);
+    serverInstance = server(testPort, __dirname, mockDb);
   });
 
   afterEach(function () {
+    mockDb.reset();
     serverInstance.close();
   });
   
@@ -57,7 +59,7 @@ describe('server', function () {
           isComplete: false
         }
       }, function (error, response, body) {
-        assert.equal(body, 0);
+        assert.equal(body, '0');
         done();
       });
     });
@@ -81,12 +83,6 @@ describe('server', function () {
     });
   });
   describe('delete a todo', function () {
-    it('responds with status code 404 if there is no such item', function (done) {
-      request.del(todoListUrl + '/0', function (error, response) {
-        assert.equal(response.statusCode, 404);
-        done();
-      });
-    });
     it('responds with status code 200', function (done) {
       request.post({
         url: todoListUrl,
@@ -119,12 +115,6 @@ describe('server', function () {
     });
   });
   describe('update a todo', function () {
-    it('responds with status code 404 if there is no such item', function (done) {
-      request.put(todoListUrl + '/0', function (error, response) {
-        assert.equal(response.statusCode, 404);
-        done();
-      });
-    });
     it('changes the title of the todo item', function (done) {
       request.post({
         url: todoListUrl,
