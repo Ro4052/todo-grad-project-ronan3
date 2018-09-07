@@ -4,6 +4,7 @@ var _ = require('underscore');
 
 module.exports = function (port, dirPath, db, middleware, callback) {
   const app = express();
+  db.connect();
 
   if (middleware) {
     app.use(middleware);
@@ -37,7 +38,7 @@ module.exports = function (port, dirPath, db, middleware, callback) {
   // Read
   app.get('/api/todo', function (req, res) {
     db.getAllTodos().then((todos) => {
-      res.status(202);
+      res.status(200);
       res.json(todos);
     }).catch((err) => {
       console.log(err.msg);

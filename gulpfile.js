@@ -43,7 +43,7 @@ gulp.task('serve', function () {
 
 gulp.task('test', ['test:istanbul']);
 gulp.task('default', ['serve'], function () {
-  childProc.exec('npm start', {cwd: './client'});
+  childProc.exec('npm start', { cwd: './client' });
   gulp.watch('server/*', ['serve']);
 });
 

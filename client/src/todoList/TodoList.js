@@ -25,7 +25,7 @@ class TodoList extends Component {
   getTodoList() {
     axios.get('/api/todo')
       .then(res => {
-        if (res.status === 202) {
+        if (res.status === 200) {
           this.setState({
             todos: res.data
           });

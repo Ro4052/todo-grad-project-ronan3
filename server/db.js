@@ -3,22 +3,24 @@ var Promise = require('promise');
 
 const MongoClient = mongodb.MongoClient, format = require('util').format;
 var collection;
-MongoClient.connect('mongodb://ds113738.mlab.com:13738/todo-grad-project',
-  {
-    useNewUrlParser: true,
-    auth: {
-      user: process.env.DB_USR,
-      password: process.env.DB_PSSWD
+
+module.exports.connect = () => {
+  MongoClient.connect('mongodb://ds113738.mlab.com:13738/todo-grad-project', {
+      useNewUrlParser: true,
+      auth: {
+        user: process.env.DB_USR,
+        password: process.env.DB_PSSWD
+      }
+    }, (err, client) => {
+    console.log('Connecting to DB client');
+    if (err) {
+        console.log('Failed to connect to DB', err);
+        return;
     }
-  }, (err, client) => {
-  console.log('Connecting to DB client');
-  if (err) {
-      console.log('Failed to connect to DB', err);
-      return;
-  }
-  collection = client.db('todo-grad-project').collection('todos');
-  console.log('DB client connected');
-});
+    collection = client.db('todo-grad-project').collection('todos');
+    console.log('DB client connected');
+  });
+}
 
 module.exports.add = (todo) => {
   return new Promise((resolve, reject) => {
