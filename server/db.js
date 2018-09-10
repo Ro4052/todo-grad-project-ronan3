@@ -2,7 +2,7 @@ var mongodb = require('mongodb');
 var Promise = require('promise');
 
 const MongoClient = mongodb.MongoClient, format = require('util').format;
-var collection;
+let collection;
 
 module.exports.connect = () => {
   MongoClient.connect('mongodb://ds113738.mlab.com:13738/todo-grad-project', {
@@ -34,7 +34,7 @@ module.exports.add = (todo) => {
           msg: err
         });
       } else {
-        resolve(todo.id);
+        resolve(todo.insertedId);
       }
     });
   });
