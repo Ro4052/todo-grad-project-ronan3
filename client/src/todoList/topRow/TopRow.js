@@ -7,7 +7,7 @@ class TopRow extends Component {
   render() {
     return (
       <Segment className='top-row'>
-        <Button.Group>
+        <Button.Group className='filter-buttons'>
           <Button id='all' onClick={this.props.updateFilter}> All </Button>
           <Button id='active' onClick={this.props.updateFilter}> Active </Button>
           <Button id='completed' onClick={this.props.updateFilter}> Completed </Button>

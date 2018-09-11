@@ -2,6 +2,17 @@
   text-align: left;
 }
 
+.filter-buttons button:hover {
+  animation-name: bounce;
+  animation-duration: 0.3s;
+}
+
+@keyframes bounce {
+  0% { transform: translate(0, 0) }
+  50% { transform: translate(0, -5px) }
+  100% { transform: translate(0, 0) }
+}
+
 .delete-completed {
   float: right;
 }
@@ -13,6 +24,6 @@
 
 @keyframes slide {
   0% { transform: translate(0) }
-  50% { transform: translate(-10px) }
+  50% { transform: translate(-5px) }
   100% { transform: translate(0) }
 }
