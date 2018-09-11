@@ -5,6 +5,9 @@ export const CREATE_TODO = 'CREATE_TODO';
 export const UPDATE_TODO = 'UPDATE_TODO';
 export const DELETE_TODO = 'DELETE_TODO';
 export const DELETE_COMPLETED = 'DELETE_COMPLETED';
+export const DELETE_ANIMATE = 'DELETE_ANIMATE';
+
+const animationLength = 500;
 
 export const getTodos = () => {
   return (dispatch) => {
@@ -57,25 +60,45 @@ export const updateTodo = (todo) => {
 }
 
 export const deleteTodo = (id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     axios.delete(`/api/todo/${id}`).then((res) => {
       if (res.status === 200) {
+        const todos = getState().todos;
+        const todo = todos.find((otherTodo) => otherTodo.id === id);
+        todo.deleted = true;
         dispatch({
-          type: DELETE_TODO,
-          payload: id
+          type: DELETE_ANIMATE,
+          payload: todo
         });
+        setTimeout(() => {
+          dispatch({
+            type: DELETE_TODO,
+            payload: id
+          });
+        }, animationLength);
       }
     });
   }
 }
 
 export const deleteCompleted = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     axios.delete('/api/todo').then((res) => {
       if (res.status === 200) {
-        dispatch({
-          type: DELETE_COMPLETED
+        getState().todos.forEach((todo) => {
+          if (todo.isComplete) {
+            todo.deleted = true;
+            dispatch({
+              type: DELETE_ANIMATE,
+              payload: todo
+            });
+          }
         });
+        setTimeout(() => {
+          dispatch({
+            type: DELETE_COMPLETED
+          });
+        }, animationLength);
       }
     });
   }

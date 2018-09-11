@@ -74,6 +74,7 @@ class TodoItem extends Component {
   }
 
   render() {
+    const listClass = 'list-item' + (this.props.todo.deleted ? ' deleted-item' : '');
     const titleClass = this.props.todo.isComplete ? 'completed-todo' : null;
     const titleDisplay = this.state.titleChange ?
       <TitleInput
@@ -97,7 +98,7 @@ class TodoItem extends Component {
       </Button>;
 
     return (
-      <List.Item className='list-item'>
+      <List.Item className={listClass}>
         <div className='title-holder'>
           {titleDisplay}
         </div>

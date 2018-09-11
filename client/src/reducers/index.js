@@ -3,7 +3,8 @@ import {
   CREATE_TODO,
   UPDATE_TODO,
   DELETE_TODO,
-  DELETE_COMPLETED
+  DELETE_COMPLETED,
+  DELETE_ANIMATE
 } from '../actions';
 
 const initialState = {
@@ -31,8 +32,13 @@ export default (state=initialState, action) => {
     }
     case DELETE_COMPLETED: {
       const todos = state.todos.filter((todo) =>
-          !todo.isComplete
-        );
+        !todo.isComplete
+      );
+      return { ...state, todos: todos };
+    }
+    case DELETE_ANIMATE: {
+      const todos = [...state.todos];
+      todos[todos.indexOf(action.payload)] = action.payload;
       return { ...state, todos: todos };
     }
     default:
