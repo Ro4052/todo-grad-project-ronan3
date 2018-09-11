@@ -51,8 +51,7 @@ export const updateTodo = (todo) => {
     }).then((res) => {
       if (res.status === 201) {
         dispatch({
-          type: UPDATE_TODO,
-          payload: res.data
+          type: UPDATE_TODO
         });
       }
     });
