@@ -1,8 +1,10 @@
-import { GET_TODOS } from '../actions';
-import { CREATE_TODO } from '../actions';
-import { UPDATE_TODO } from '../actions';
-import { DELETE_TODO } from '../actions';
-import { DELETE_COMPLETED } from '../actions';
+import {
+  GET_TODOS,
+  CREATE_TODO,
+  UPDATE_TODO,
+  DELETE_TODO,
+  DELETE_COMPLETED
+} from '../actions';
 
 const initialState = {
   todos: []
