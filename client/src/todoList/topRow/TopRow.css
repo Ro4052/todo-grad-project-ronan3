@@ -5,3 +5,14 @@
 .delete-completed {
   float: right;
 }
+
+.delete-completed:hover {
+  animation-name: slide;
+  animation-duration: 0.3s;
+}
+
+@keyframes slide {
+  0% { transform: translate(0) }
+  50% { transform: translate(-10px) }
+  100% { transform: translate(0) }
+}
