@@ -15,7 +15,7 @@ import {
   deleteCompleted
 } from '../actions';
 
-class TodoList extends Component {
+export class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
