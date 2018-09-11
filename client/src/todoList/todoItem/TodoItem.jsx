@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { List, Button, Icon } from 'semantic-ui-react';
 
-import TitleInput from './../../core/titleInput/TitleInput';
+import TitleInput from '../../core/titleInput/TitleInput';
 import './TodoItem.css';
 
 class TodoItem extends Component {

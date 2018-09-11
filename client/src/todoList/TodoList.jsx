@@ -4,7 +4,7 @@ import { List } from 'semantic-ui-react';
 
 import TodoItem from './todoItem/TodoItem';
 import TopRow from './topRow/TopRow';
-import TitleInput from './../core/titleInput/TitleInput';
+import TitleInput from '../core/titleInput/TitleInput';
 import './TodoList.css';
 
 import {
