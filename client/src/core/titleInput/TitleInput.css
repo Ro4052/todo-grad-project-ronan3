@@ -1,3 +1,14 @@
 .full-width {
   width: 100%;
 }
+
+.input-form button:hover {
+  animation-name: slide;
+  animation-duration: 0.3s;
+}
+
+@keyframes slide {
+  0% { transform: translate(0) }
+  50% { transform: translate(-5px) }
+  100% { transform: translate(0) }
+}

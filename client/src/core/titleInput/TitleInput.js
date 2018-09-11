@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input } from 'semantic-ui-react';
+import { Input, Button } from 'semantic-ui-react';
 
 import './TitleInput.css';
 
@@ -38,11 +38,11 @@ class TitleInput extends Component {
 
   render() {
     return (
-      <form onSubmit={this.submitText}>
+      <form className='input-form' onSubmit={this.submitText}>
         <Input
           id={this.props.inputId}
           className={this.props.fullWidth ? 'full-width' : null}
-          action={this.props.action}
+          action={this.props.action ? <Button> {this.props.action} </Button> : null}
           error={this.state.inputError}
           value={this.state.inputText}
           onChange={this.updateText}
