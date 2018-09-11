@@ -1,7 +1,15 @@
 .list-item {
+  animation-name: create;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
   padding-top: 1em !important;
   padding-bottom: 1em !important;
   display: flex !important;
+}
+
+@keyframes create {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
 }
 
 .deleted-item {
