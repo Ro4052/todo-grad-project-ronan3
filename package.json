@@ -18,7 +18,8 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start": "gulp",
+    "start": "node server",
+    "start:local": "gulp",
     "test": "gulp test",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
