@@ -7,7 +7,7 @@ export const DELETE_TODO = 'DELETE_TODO';
 export const DELETE_COMPLETED = 'DELETE_COMPLETED';
 export const DELETE_ANIMATE = 'DELETE_ANIMATE';
 
-const animationLength = 500;
+const animationLength = 300;
 
 export const getTodos = () => {
   return (dispatch) => {
