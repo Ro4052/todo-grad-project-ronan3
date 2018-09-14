@@ -19,12 +19,16 @@ class TodoItem extends Component {
     this.clickUpdateTodo = this.clickUpdateTodo.bind(this);
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    this.removeListeners();
+  }
+
+  addListeners() {
     document.addEventListener('click', this.pageClick, true);
     document.addEventListener('keydown', this.detectEscape, true);
   }
 
-  componentWillUnmount() {
+  removeListeners() {
     document.removeEventListener('click', this.pageClick, true);
     document.removeEventListener('keydown', this.detectEscape, true);
   }
@@ -53,6 +57,11 @@ class TodoItem extends Component {
       this.setState({
         titleChange: active
       });
+      if (active) {
+        this.addListeners();
+      } else {
+        this.removeListeners();
+      }
     }
   }
 
