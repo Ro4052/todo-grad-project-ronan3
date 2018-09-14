@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { List } from 'semantic-ui-react';
 
@@ -7,13 +8,7 @@ import TopRow from './topRow/TopRow';
 import TitleInput from '../core/titleInput/TitleInput';
 import './TodoList.css';
 
-import {
-  getTodos,
-  createTodo,
-  updateTodo,
-  deleteTodo,
-  deleteCompleted
-} from '../actions';
+import * as todoActions from '../actions';
 
 export class TodoList extends Component {
   constructor(props) {
@@ -50,7 +45,11 @@ export class TodoList extends Component {
 
     return (
       <div className='holder'>
-        <TopRow numCompleted={numCompleted} updateFilter={this.updateFilter} deleteCompleted={this.props.deleteCompleted} />
+        <TopRow
+          numCompleted={numCompleted}
+          numActive={this.props.todos.length - numCompleted}
+          updateFilter={this.updateFilter}
+          deleteCompleted={this.props.deleteCompleted} />
         <List celled>
           {displayList.length ? displayList : 'No todos, create one below!'}
         </List>
@@ -69,13 +68,7 @@ const mapStateToProps = (state) => ({
   todos: state.todos
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getTodos() { dispatch(getTodos()); },
-  createTodo(todo) { dispatch(createTodo(todo)); },
-  updateTodo(todo) { dispatch(updateTodo(todo)); },
-  deleteTodo(id) { dispatch(deleteTodo(id)); },
-  deleteCompleted() { dispatch(deleteCompleted()); }
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators(todoActions, dispatch);
 
 export default connect(
   mapStateToProps,
