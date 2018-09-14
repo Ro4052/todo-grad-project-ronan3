@@ -18,6 +18,7 @@ export class TodoList extends Component {
     }
     this.updateFilter = this.updateFilter.bind(this);
     this.props.getTodos();
+    setInterval(this.props.getTodos, 10000);
   }
 
   updateFilter(event) {
